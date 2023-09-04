@@ -12,6 +12,10 @@ type ContactRepoImpl struct {
 	p *persistence.Persistence
 }
 
+func (p *ContactRepoImpl) Add(c entity.Contact) error {
+	return nil
+}
+
 func (p *ContactRepoImpl) GetByName(name string) ([]entity.Contact, error) {
 	// An contacts slice to hold data from returned rows.
 	var contacts []entity.Contact
@@ -31,7 +35,7 @@ func (p *ContactRepoImpl) GetByName(name string) ([]entity.Contact, error) {
 		contacts = append(contacts, contact)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("albumsByArtist %q: %v", name, err)
+		return nil, fmt.Errorf("error %q: %v", name, err)
 	}
 	return contacts, nil
 
