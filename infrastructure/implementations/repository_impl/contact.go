@@ -12,6 +12,10 @@ type ContactRepoImpl struct {
 	p *persistence.Persistence
 }
 
+func (p *ContactRepoImpl) Add(c entity.Contact) error {
+	return nil
+}
+
 func (p *ContactRepoImpl) GetByName(name string) ([]entity.Contact, error) {
 	var contacts []entity.Contact
 	db := p.p.AztDB.DB
@@ -21,7 +25,6 @@ func (p *ContactRepoImpl) GetByName(name string) ([]entity.Contact, error) {
 		fmt.Printf("error %q: %v", name, err)
 		return nil, fmt.Errorf("albumsByArtist %q: %v", name, err)
 	}
-
 	return contacts, nil
 
 }
