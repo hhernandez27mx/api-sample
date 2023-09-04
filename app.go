@@ -1,13 +1,24 @@
 package main
 
 import (
-	"azt.com/api-sample/infra/router"
+	"log"
+	"os"
+
+	"azt.com/api-sample/infrastructure/persistence"
+	"azt.com/api-sample/infrastructure/router"
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 func init() {
-
+	if err := godotenv.Load(); err != nil {
+		log.Println("no env gotten")
+	}
 }
 func main() {
-	r := router.CreateRoute()
-	r.Run(":8080")
+	persistence := persistence.Create()
+	r := router.CreateRoute(persistence)
+
+	port := ":" + os.Getenv("PORT")
+	r.Run(port)
 }
