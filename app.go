@@ -7,7 +7,6 @@ import (
 	"azt.com/api-sample/infrastructure/persistence"
 	"azt.com/api-sample/infrastructure/router"
 	"github.com/joho/godotenv"
-	_ "github.com/lib/pq"
 )
 
 func init() {

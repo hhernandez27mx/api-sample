@@ -13,26 +13,15 @@ type ContactRepoImpl struct {
 }
 
 func (p *ContactRepoImpl) GetByName(name string) ([]entity.Contact, error) {
-	// An contacts slice to hold data from returned rows.
 	var contacts []entity.Contact
 	db := p.p.AztDB.DB
 
-	rows, err := db.Query("SELECT id,email,age,name FROM contact WHERE name = $1", name)
+	err := db.Where("name = ?", name).Find(&contacts).Error
 	if err != nil {
+		fmt.Printf("error %q: %v", name, err)
 		return nil, fmt.Errorf("albumsByArtist %q: %v", name, err)
 	}
-	defer rows.Close()
-	// Loop through rows, using Scan to assign column data to struct fields.
-	for rows.Next() {
-		var contact entity.Contact
-		if err := rows.Scan(&contact.ID, &contact.Email, &contact.Age, &contact.Name); err != nil {
-			return nil, fmt.Errorf("albumsByArtist %q: %v", name, err)
-		}
-		contacts = append(contacts, contact)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("albumsByArtist %q: %v", name, err)
-	}
+
 	return contacts, nil
 
 }
