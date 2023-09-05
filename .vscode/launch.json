@@ -12,5 +12,12 @@
             "mode": "auto",
             "program": "${workspaceFolder}"
         },
+        {
+            "name": "debug Automigrate",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${file}"
+        },
     ]
 }

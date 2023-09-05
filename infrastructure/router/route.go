@@ -22,7 +22,7 @@ func CreateRoute(p *persistence.Persistence) *gin.Engine {
 
 	rContact := r.Group("contact")
 	rContact.Use(middleware.AuthRequest)
-	rContact.POST("/", handler.AdddContactHandlerGin)
+	rContact.POST("/", handler.AddContactHandler(contactHandler))
 	rContact.GET("/:id", handler.GetContactHandlerGin)
 	rContact.GET("/byName", contactHandler.GetContactByNameHandler)
 	return r

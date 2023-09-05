@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	if err := godotenv.Load("../.env"); err != nil {
+	if err := godotenv.Load(); err != nil {
 		log.Println("no env gotten")
 	}
 }
@@ -17,5 +17,7 @@ func init() {
 func main() {
 
 	persistence := persistence.Create()
+
 	persistence.AztDB.DB.AutoMigrate(&entity.Contact{})
+	persistence.AztDB.DB.AutoMigrate(&entity.Address{})
 }

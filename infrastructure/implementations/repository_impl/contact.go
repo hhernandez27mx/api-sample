@@ -13,14 +13,19 @@ type ContactRepoImpl struct {
 }
 
 func (p *ContactRepoImpl) Add(c entity.Contact) error {
-	return nil
+	return p.p.AztDB.DB.Create(&c).Error
+
 }
 
 func (p *ContactRepoImpl) GetByName(name string) ([]entity.Contact, error) {
 	var contacts []entity.Contact
 	db := p.p.AztDB.DB
 
-	err := db.Where("name = ?", name).Find(&contacts).Error
+	err := db.
+		Preload("Addresses").
+		Where("name = ?", name).
+		Find(&contacts).Error
+
 	if err != nil {
 		fmt.Printf("error %q: %v", name, err)
 		return nil, fmt.Errorf("albumsByArtist %q: %v", name, err)

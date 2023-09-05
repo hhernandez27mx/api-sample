@@ -10,6 +10,13 @@ type ContactService struct {
 	Persistence *persistence.Persistence
 }
 
+func (c *ContactService) AddServ(contact entity.Contact) error {
+	contactRepo := repositoryimpl.ContactRepository(c.Persistence)
+	err := contactRepo.Add(contact)
+
+	return err
+}
+
 func (c *ContactService) GetByName(name string) []entity.Contact {
 	contactRepo := repositoryimpl.ContactRepository(c.Persistence)
 	data, err := contactRepo.GetByName(name)

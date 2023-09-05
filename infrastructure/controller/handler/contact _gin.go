@@ -20,7 +20,7 @@ func NewContactHandler(p *persistence.Persistence) *ContactHandler {
 	return &ContactHandler{p}
 }
 
-func AdddContactHandlerGin(c *gin.Context) {
+func (p *ContactHandler) AdddContactHandlerGin(c *gin.Context) {
 	var data entity.Contact
 	err := c.ShouldBind(&data)
 	if err != nil {
@@ -28,11 +28,14 @@ func AdddContactHandlerGin(c *gin.Context) {
 		return
 	}
 
-	// Procesar los datos recibidos
-	result := fmt.Sprintf("Hola, %s. Tienes %d años y tu correo es %s.", data.Name, data.Age, data.Email)
+	contctServ := services.NewContactService(p.Persistence)
+	err = contctServ.AddServ(data)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-	response := ResponseApi{0, result}
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusOK, gin.H{"code": 0})
 }
 
 func GetContactHandlerGin(c *gin.Context) {
@@ -63,4 +66,10 @@ func (p *ContactHandler) GetContactByNameHandler(c *gin.Context) {
 
 	response := gin.H{"data": result}
 	c.JSON(http.StatusOK, response)
+}
+
+func AddContactHandler(handler *ContactHandler) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		handler.AdddContactHandlerGin(c)
+	}
 }
